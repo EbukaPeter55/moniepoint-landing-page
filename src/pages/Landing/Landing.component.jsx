@@ -5,9 +5,11 @@ import NavBar from "../../components/NavBar/NavBar.component.jsx";
 const Landing = () => {
 
     return (
-        <div>
+        <div className='container-fluid'>
             <NavBar/>
-            <h2>Landing</h2>
+            <section className='hero-section'>
+                <h1 className='text-center'>OUR ADVANTAGES</h1>
+            </section>
         </div>
     )
 }

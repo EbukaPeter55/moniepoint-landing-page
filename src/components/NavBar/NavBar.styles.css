@@ -7,6 +7,10 @@ header nav ul{
         list-style-type: none;
 }
 
+header nav ul li img{
+    cursor: pointer;
+}
+
 header nav .navbar__left li button,
 header nav .navbar__right li:nth-child(1) button{
     background: #ffffff;
