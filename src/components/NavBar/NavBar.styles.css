@@ -1,0 +1,26 @@
+header {
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+header nav ul{
+        list-style-type: none;
+}
+
+header nav .navbar__left li button,
+header nav .navbar__right li:nth-child(1) button{
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 1rem;
+    padding: .2rem 1rem;
+    font-weight: 500;
+}
+
+header nav .navbar__right li:nth-child(2) button {
+    background: #FF5928;
+    border-radius: 1rem;
+    padding: .2rem 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    border: none;
+}
