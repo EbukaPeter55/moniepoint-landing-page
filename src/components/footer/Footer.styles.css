@@ -1,0 +1,8 @@
+footer {
+    max-width: 79rem;
+    margin: 13rem auto 0 auto;
+}
+
+footer .footer-right .footer-right__socials img{
+    cursor: pointer;
+}
