@@ -124,3 +124,69 @@
 .near-footer .near-footer__getstarted{
      margin-top: 2rem;
 }
+
+/*EXPLORE STYLES*/
+.explore {
+    max-width: 78rem;
+    margin: 0 auto;
+}
+
+.explore .explore__left{
+    margin-top: 8rem;
+}
+
+.content-wrapper__buttons{
+    margin-top: 2.5rem;
+}
+
+.explore .explore__left h2{
+    max-width: 36rem;
+    margin-top: 2.5rem;
+    font-size: 4rem;
+    letter-spacing: .1rem;
+    font-weight: 400;
+}
+
+.content-wrapper .content-wrapper__buttons button:nth-child(1) {
+    background: #FF5928;
+    color: #ffffff;
+    border-radius: 20px;
+    border: none;
+    padding: .5rem 1.5rem;
+}
+
+.content-wrapper .content-wrapper__buttons button:nth-child(2) {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    border: 1px solid #000000;
+    padding: .5rem 1.1rem;
+}
+
+/*Explore Navbar and hero section unique style*/
+.container-pagethree {
+    position: relative;
+}
+
+.container-pagethree .nav-pagethree{
+    width: 100%;
+    position: absolute;
+    margin-top: 1rem;
+    z-index: 1;
+}
+
+.image-buttonwrapper {
+    position: relative;
+    width: 100%;
+}
+
+.image-buttonwrapper button {
+    position: absolute;
+    background: transparent;
+    border-radius: 25px;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    padding: .4rem 1rem;
+    left: 1rem;
+    bottom: 1rem;
+}
