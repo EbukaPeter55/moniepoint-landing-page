@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { gsap } from 'gsap';
 import SplitType from 'split-type'
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Landing.styles.css';
 import NavBar from '../../components/NavBar/NavBar.component.jsx';
 import Footer from '../../components/footer/Footer.component.jsx';
@@ -37,7 +38,8 @@ import exploreRightBottom from '../../assets/explore-right-bottom.svg';
 import exploreRightBottomTwo from '../../assets/explore-right-bottom-2.svg';
 
 
-
+// Register ScrollTrigger with GSAP
+gsap.registerPlugin(ScrollTrigger);
 
 const Landing = () => {
     const cardRef = useRef(null);
@@ -48,9 +50,10 @@ const Landing = () => {
     const secondPageRef = useRef(null);
     const thirdPageRef = useRef(null);
     const mainNavRef = useRef(null);
-
+    const exploreRightRef = useRef(null);
 
     const [splitTextInstance, setSplitTextInstance] = useState(null);
+
 
 
     useEffect(() => {
@@ -82,10 +85,9 @@ const Landing = () => {
         const ourText = new SplitType('h1.our-text', { types: 'chars' });
         setSplitTextInstance(ourText);
 
-        const exploreService = new SplitType('.content-wrapper', {types: 'chars'});
-        setTimeout(()=>{
-            setSplitTextInstance(exploreService);
-        }, 10000)
+        // const exploreService = new SplitType('.content-wrapper h2', {types: 'chars'});
+        // setSplitTextInstance(exploreService);
+        //
 
         gsap.fromTo(
             ourText.chars,
@@ -261,7 +263,42 @@ const Landing = () => {
             },
         });
 
+        thirdPageRightScrollEffect();
     }, [secondPageRef]);
+
+    const thirdPageRightScrollEffect = () =>{
+        if (exploreRightRef.current) {
+            // Get the right container
+            const exploreRightContainer = exploreRightRef.current;
+
+            // Define the animation for each image-buttonwrapper
+            const animateImage = (element, index) => {
+                const direction = index % 2 === 0 ? 1 : -1; // 1 for up, -1 for down
+                gsap.to(element, {
+                    y: direction * 1000, // Adjust this value based on your desired distance
+                    duration: 10, // Adjust the duration based on your desired speed
+                    repeat: -1, // Infinite repeat
+                    ease: 'linear', // Smooth linear animation
+                    immediateRender: true, // Start the animation immediately without waiting
+                });
+            };
+
+            // Loop through each image-buttonwrapper and apply the animation
+            const imageButtonWrappers = exploreRightContainer.querySelectorAll('.image-buttonwrapper');
+
+            imageButtonWrappers.forEach((imageButtonWrapper, index) => {
+                animateImage(imageButtonWrapper, index);
+            });
+
+            // Use ScrollTrigger to trigger animations based on the scroll position
+            ScrollTrigger.create({
+                trigger: exploreRightContainer,
+                start: 'top top', // Trigger when the top of the container reaches the top of the viewport
+                end: 'bottom bottom', // Trigger when the bottom of the container reaches the bottom of the viewport
+                scrub: true, // Smoothly animates elements as you scroll
+            });
+        }
+    }
 
     return (
         <div className='container-fluid container-parent'>
@@ -367,7 +404,9 @@ const Landing = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="explore__right">
+                        <div className="explore__right"
+                             ref={exploreRightRef}
+                        >
                             <div className='d-flex gap-4'>
                                 <div className='image-buttonwrapper'>
                                     <img src={exploreRightTop} alt="explore-right-top-image"/>
