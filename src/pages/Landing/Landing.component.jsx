@@ -63,31 +63,11 @@ const Landing = () => {
         const timelineFour = gsap.timeline();
         const timelineGetStarted = gsap.timeline();
         const firstPageDiv = firstPageRef.current
-        if(firstPageDiv){
-            console.log('first page', firstPageDiv);
-        }
-
         const secondPageDiv = secondPageRef.current
-        if(secondPageDiv){
-            console.log('test page', secondPageDiv)
-        }
-
         const thirdPageDiv = thirdPageRef.current
-        if(thirdPageDiv){
-            console.log('test last page', thirdPageDiv)
-        }
-
         const mainNavDiv = mainNavRef.current
-        if(mainNavDiv){
-            console.log('test last page', mainNavDiv)
-        }
-
         const ourText = new SplitType('h1.our-text', { types: 'chars' });
         setSplitTextInstance(ourText);
-
-        // const exploreService = new SplitType('.content-wrapper h2', {types: 'chars'});
-        // setSplitTextInstance(exploreService);
-        //
 
         gsap.fromTo(
             ourText.chars,
@@ -162,8 +142,6 @@ const Landing = () => {
             duration: 0.5,
             onComplete: () => {
                 cardRefThree.current.style.display = 'none';
-                // Trigger the appearance of the next section here
-                // gsap.from('.revolution-hero', { y: '100%', duration: 1 });
             },
         });
 
@@ -184,22 +162,19 @@ const Landing = () => {
             duration: 0.5,
             onComplete: () => {
                 cardRefFour.current.style.display = 'none';
-                // Trigger the appearance of the next section here
-                // gsap.from('.revolution', { y: '100%', duration: 1 });
                 secondPageRef.current.style.display = 'block';
                 firstPageRef.current.style.display = 'none';
                 // Animate the top text "REVOLUTIONILIZING"
                 gsap.from('.revolution-hero h1', {
-                    x: 500, // Initial position off-screen to the right
-                    opacity: 0, // Initial opacity, if needed
+                    x: 500,
+                    opacity: 0,
                     duration: 1,
                     ease: 'power2.inOut',
-                    // delay: 4.5,
                     onComplete: () => {
                         // Use gsap.to with x: 0 as the starting point
                         gsap.to('.revolution-hero h1', {
-                            x: 0, // Final position at the center
-                            opacity: 1, // Final opacity, if needed
+                            x: 0,
+                            opacity: 1,
                             duration: 1,
                             ease: 'power2.inOut'
                         });
@@ -208,16 +183,15 @@ const Landing = () => {
 
                 // Animate the middle text: 'Dental care'
                 gsap.from('.dental-care', {
-                    x: -500, // Initial position off-screen to the right
-                    opacity: 0, // Initial opacity, if needed
+                    x: -500,
+                    opacity: 0,
                     duration: 1,
                     ease: 'power2.inOut',
-                    // delay: 4.5,
                     onComplete: () => {
                         // Use gsap.to with x: 0 as the starting point
                         gsap.to('.dental-care', {
-                            x: 0, // Final position at the center
-                            opacity: 1, // Final opacity, if needed
+                            x: 0,
+                            opacity: 1,
                             duration: 1,
                             ease: 'power2.inOut'
                         });
@@ -226,16 +200,16 @@ const Landing = () => {
 
                 // Animate the bottom text 'With technology'
                 gsap.from('.with-tech h2', {
-                    x: 500, // Initial position off-screen to the right
-                    opacity: 0, // Initial opacity, if needed
+                    x: 500,
+                    opacity: 0,
                     duration: 1,
                     ease: 'power2.inOut',
                     // delay: 4.5,
                     onComplete: () => {
                         // Use gsap.to with x: 0 as the starting point
                         gsap.to('.with-tech h2', {
-                            x: 0, // Final position at the center
-                            opacity: 1, // Final opacity, if needed
+                            x: 0,
+                            opacity: 1,
                             duration: 1,
                             ease: 'power2.inOut',
                             onComplete: () => {
@@ -246,15 +220,13 @@ const Landing = () => {
                         });
 
                         timelineGetStarted.from('.near-footer__getstarted', {
-                            y: 80, // Initial position off-screen to the bottom
-                            opacity: 0, // Initial opacity, if needed
+                            y: 80,
+                            opacity: 0,
                             duration: 0.5,
-                            // ease: 'power2.inOut',
                         }).to('.near-footer__getstarted', {
-                            y: 0, // Final position at the center
-                            opacity: 1, // Final opacity, if needed
+                            y: 0,
+                            opacity: 1,
                             duration: 0.5,
-                            // ease: 'power2.inOut',
                         });
 
                     },
@@ -275,11 +247,11 @@ const Landing = () => {
             const animateImage = (element, index) => {
                 const direction = index % 2 === 0 ? 1 : -1; // 1 for up, -1 for down
                 gsap.to(element, {
-                    y: direction * 1000, // Adjust this value based on your desired distance
-                    duration: 10, // Adjust the duration based on your desired speed
-                    repeat: -1, // Infinite repeat
-                    ease: 'linear', // Smooth linear animation
-                    immediateRender: true, // Start the animation immediately without waiting
+                    y: direction * 1000,
+                    duration: 10,
+                    repeat: -1,
+                    ease: 'linear',
+                    immediateRender: true,
                 });
             };
 
@@ -293,9 +265,9 @@ const Landing = () => {
             // Use ScrollTrigger to trigger animations based on the scroll position
             ScrollTrigger.create({
                 trigger: exploreRightContainer,
-                start: 'top top', // Trigger when the top of the container reaches the top of the viewport
-                end: 'bottom bottom', // Trigger when the bottom of the container reaches the bottom of the viewport
-                scrub: true, // Smoothly animates elements as you scroll
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: true,
             });
         }
     }
@@ -383,11 +355,12 @@ const Landing = () => {
                 </section>
                 {/*End of Revotionalize section*/}
 
-                <div className='nav-pagethree'>
-                    <NavBar/>
-                </div>
+
                 <div className='last-page'
                 ref={thirdPageRef}>
+                    <div className='nav-pagethree'>
+                        <NavBar/>
+                    </div>
                     {/*EXPLORE SECTION*/}
                     <section className="container-fluid explore d-flex flex-wrap justify-content-between">
                         <div className="explore__left">
