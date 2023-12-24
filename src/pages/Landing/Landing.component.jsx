@@ -43,6 +43,12 @@ const Landing = () => {
     const cardRef = useRef(null);
     const cardRefTwo= useRef(null);
     const cardRefThree= useRef(null);
+    const cardRefFour= useRef(null);
+    const firstPageRef = useRef(null);
+    const secondPageRef = useRef(null);
+    const thirdPageRef = useRef(null);
+    const mainNavRef = useRef(null);
+
 
     const [splitTextInstance, setSplitTextInstance] = useState(null);
 
@@ -51,9 +57,35 @@ const Landing = () => {
         const timeline = gsap.timeline();
         const timelineTwo = gsap.timeline();
         const timelineThree = gsap.timeline();
+        const timelineFour = gsap.timeline();
+        const timelineGetStarted = gsap.timeline();
+        const firstPageDiv = firstPageRef.current
+        if(firstPageDiv){
+            console.log('first page', firstPageDiv);
+        }
+
+        const secondPageDiv = secondPageRef.current
+        if(secondPageDiv){
+            console.log('test page', secondPageDiv)
+        }
+
+        const thirdPageDiv = thirdPageRef.current
+        if(thirdPageDiv){
+            console.log('test last page', thirdPageDiv)
+        }
+
+        const mainNavDiv = mainNavRef.current
+        if(mainNavDiv){
+            console.log('test last page', mainNavDiv)
+        }
 
         const ourText = new SplitType('h1.our-text', { types: 'chars' });
         setSplitTextInstance(ourText);
+
+        const exploreService = new SplitType('.content-wrapper', {types: 'chars'});
+        setTimeout(()=>{
+            setSplitTextInstance(exploreService);
+        }, 10000)
 
         gsap.fromTo(
             ourText.chars,
@@ -128,19 +160,122 @@ const Landing = () => {
             duration: 0.5,
             onComplete: () => {
                 cardRefThree.current.style.display = 'none';
+                // Trigger the appearance of the next section here
+                // gsap.from('.revolution-hero', { y: '100%', duration: 1 });
             },
         });
 
-    }, []);
+        /**
+         * Fourth image animation
+         */
+        gsap.set(cardRefThree.current, { y: '100%', rotate: -10 });
+
+        // Spin animation
+        timelineFour.to(cardRefFour.current, { rotate: 10, duration: 0.5 });
+
+        // Slide up animation after a delay
+        timelineFour.to(cardRefFour.current, { y: -280, duration: 0.3, delay: 4 });
+
+        // Fade out and remove from DOM
+        timelineFour.to(cardRefFour.current, {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+                cardRefFour.current.style.display = 'none';
+                // Trigger the appearance of the next section here
+                // gsap.from('.revolution', { y: '100%', duration: 1 });
+                secondPageRef.current.style.display = 'block';
+                firstPageRef.current.style.display = 'none';
+                // Animate the top text "REVOLUTIONILIZING"
+                gsap.from('.revolution-hero h1', {
+                    x: 500, // Initial position off-screen to the right
+                    opacity: 0, // Initial opacity, if needed
+                    duration: 1,
+                    ease: 'power2.inOut',
+                    // delay: 4.5,
+                    onComplete: () => {
+                        // Use gsap.to with x: 0 as the starting point
+                        gsap.to('.revolution-hero h1', {
+                            x: 0, // Final position at the center
+                            opacity: 1, // Final opacity, if needed
+                            duration: 1,
+                            ease: 'power2.inOut'
+                        });
+                    },
+                });
+
+                // Animate the middle text: 'Dental care'
+                gsap.from('.dental-care', {
+                    x: -500, // Initial position off-screen to the right
+                    opacity: 0, // Initial opacity, if needed
+                    duration: 1,
+                    ease: 'power2.inOut',
+                    // delay: 4.5,
+                    onComplete: () => {
+                        // Use gsap.to with x: 0 as the starting point
+                        gsap.to('.dental-care', {
+                            x: 0, // Final position at the center
+                            opacity: 1, // Final opacity, if needed
+                            duration: 1,
+                            ease: 'power2.inOut'
+                        });
+                    },
+                });
+
+                // Animate the bottom text 'With technology'
+                gsap.from('.with-tech h2', {
+                    x: 500, // Initial position off-screen to the right
+                    opacity: 0, // Initial opacity, if needed
+                    duration: 1,
+                    ease: 'power2.inOut',
+                    // delay: 4.5,
+                    onComplete: () => {
+                        // Use gsap.to with x: 0 as the starting point
+                        gsap.to('.with-tech h2', {
+                            x: 0, // Final position at the center
+                            opacity: 1, // Final opacity, if needed
+                            duration: 1,
+                            ease: 'power2.inOut',
+                            onComplete: () => {
+                                secondPageRef.current.style.display = 'none';
+                                mainNavRef.current.style.display = 'none';
+                                thirdPageRef.current.style.display = 'block';
+                            }
+                        });
+
+                        timelineGetStarted.from('.near-footer__getstarted', {
+                            y: 80, // Initial position off-screen to the bottom
+                            opacity: 0, // Initial opacity, if needed
+                            duration: 0.5,
+                            // ease: 'power2.inOut',
+                        }).to('.near-footer__getstarted', {
+                            y: 0, // Final position at the center
+                            opacity: 1, // Final opacity, if needed
+                            duration: 0.5,
+                            // ease: 'power2.inOut',
+                        });
+
+                    },
+                });
+
+            },
+        });
+
+    }, [secondPageRef]);
 
     return (
         <div className='container-fluid container-parent'>
             <div className='container-wrapper container-pagethree'>
-                <NavBar/>
-                <section className='hero-section'>
+                <div ref={mainNavRef}>
+                    <NavBar/>
+                </div>
+                <section className='hero-section'
+                ref={firstPageRef}>
                     <h1 className='text-center our-text'>OUR ADVANTAGES</h1>
                     <div className='hero-section__overlay'>
-                        <div>
+                        <div
+                            className='animated-imagewrapper'
+                        ref={cardRefFour}>
                             <img src={firstPageFour} alt="first-page-four"/>
                         </div>
                         <div className='animated-imagewrapper'
@@ -162,106 +297,110 @@ const Landing = () => {
                 </section>
 
                 {/*Revotionalize section*/}
-                {/*<section className='container-fluid'>*/}
-                {/*  <div className='revolution-hero d-flex align-items-center justify-content-center gap-4'>*/}
-                {/*      <h1>REVOLUTIONILIZING</h1>*/}
-                {/*      <div>*/}
-                {/*          <div className='d-flex align-items-center gap-2'>*/}
-                {/*              <img src={revolutionImageOne} alt="left-revolution-image"/>*/}
-                {/*              <img src={revolutionImageTwo} alt="middle-revolution-image"/>*/}
-                {/*              <img src={revolutionImageThree} alt="right-revolution-image"/>*/}
-                {/*          </div>*/}
-                {/*          <p>Modern Solutions,<br></br> Timeless Smiles</p>*/}
-                {/*      </div>*/}
-                {/*  </div>*/}
-                {/*    <div className='mt-5 dental-care container-fluid d-flex align-items-center gap-4 justify-content-center'>*/}
-                {/*        <div className='dental-care__images d-flex align-items-center gap-2'>*/}
-                {/*            <img src={assistanceText} alt="assistance-text"/>*/}
-                {/*            <img src={assistanceIcon} alt="assistance-icon"/>*/}
-                {/*        </div>*/}
-                {/*        <div className='d-flex align-items-center gap-4'>*/}
-                {/*            <h2>DENTAL</h2>*/}
-                {/*            <div className='dental-care__textimage'>*/}
-                {/*                <img className='img-fluid' src={avatar} alt="avatar"/>*/}
-                {/*                <img className='img-fluid' src={starIcon} alt="star-icon"/>*/}
-                {/*            </div>*/}
-                {/*            <h2>CARE</h2>*/}
-                {/*          </div>*/}
-                {/*    </div>*/}
-                {/*    <div className="container-fluid with-tech d-flex align-items-center justify-content-center gap-2">*/}
-                {/*        <h2>WITH TECHNOLOGY</h2>*/}
-                {/*        <div className='with-tech__images'>*/}
-                {/*            <img src={smileImageOne} alt="smile-image-1"/>*/}
-                {/*            <img src={smileImageTwo} alt="smile-image-2"/>*/}
-                {/*            <img src={smileImageThree} alt="smile-image-3"/>*/}
-                {/*            <img src={smileImageFour} alt="smile-image-4"/>*/}
-                {/*        </div>*/}
-                {/*        <div className='with-tech__cross mb-4'>*/}
-                {/*            <img src={withTechCross} alt="with-tech-cross"/>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*    <div className="near-footer container-fluid d-flex justify-content-start">*/}
-                {/*        <div className='near-footer__image'>*/}
-                {/*            <img className='img-fluid' src={smile} alt="with-tech-smile-image"/>*/}
-                {/*            <img className='img-fluid' src={play} alt="play-image"/>*/}
-                {/*        </div>*/}
-                {/*        <img className='near-footer__getstarted' src={getStarted} alt="getStarged"/>*/}
-                {/*    </div>*/}
-                {/*</section>*/}
+                <section className='container-fluid revolution'
+                ref={secondPageRef}>
+                  <div className='revolution-hero d-flex align-items-center justify-content-center gap-4'>
+                      <h1>REVOLUTIONILIZING</h1>
+                      <div>
+                          <div className='d-flex align-items-center gap-2'>
+                              <img src={revolutionImageOne} alt="left-revolution-image"/>
+                              <img src={revolutionImageTwo} alt="middle-revolution-image"/>
+                              <img src={revolutionImageThree} alt="right-revolution-image"/>
+                          </div>
+                          <p>Modern Solutions,<br></br> Timeless Smiles</p>
+                      </div>
+                  </div>
+                    <div className='mt-5 dental-care container-fluid d-flex align-items-center gap-4 justify-content-center'>
+                        <div className='dental-care__images d-flex align-items-center gap-2'>
+                            <img src={assistanceText} alt="assistance-text"/>
+                            <img src={assistanceIcon} alt="assistance-icon"/>
+                        </div>
+                        <div className='d-flex align-items-center gap-4'>
+                            <h2>DENTAL</h2>
+                            <div className='dental-care__textimage'>
+                                <img className='img-fluid' src={avatar} alt="avatar"/>
+                                <img className='img-fluid' src={starIcon} alt="star-icon"/>
+                            </div>
+                            <h2>CARE</h2>
+                          </div>
+                    </div>
+                    <div className="container-fluid with-tech d-flex align-items-center justify-content-center gap-2">
+                        <h2>WITH TECHNOLOGY</h2>
+                        <div className='with-tech__images'>
+                            <img src={smileImageOne} alt="smile-image-1"/>
+                            <img src={smileImageTwo} alt="smile-image-2"/>
+                            <img src={smileImageThree} alt="smile-image-3"/>
+                            <img src={smileImageFour} alt="smile-image-4"/>
+                        </div>
+                        <div className='with-tech__cross mb-4'>
+                            <img src={withTechCross} alt="with-tech-cross"/>
+                        </div>
+                    </div>
+                    <div className="near-footer container-fluid d-flex justify-content-start">
+                        <div className='near-footer__image'>
+                            <img className='img-fluid' src={smile} alt="with-tech-smile-image"/>
+                            <img className='img-fluid' src={play} alt="play-image"/>
+                        </div>
+                        <img className='near-footer__getstarted' src={getStarted} alt="getStarged"/>
+                    </div>
+                </section>
                 {/*End of Revotionalize section*/}
 
-               {/*<div className='nav-pagethree'>*/}
-               {/*    <NavBar/>*/}
-               {/*</div>*/}
-                {/*EXPLORE SECTION*/}
-                {/*<section className="container-fluid explore d-flex flex-wrap justify-content-between">*/}
-                {/*    <div className="explore__left">*/}
-                {/*        <div className='d-flex align-items-center gap-2'>*/}
-                {/*                          <img src={exploreMiniLeft} alt="left-mini-icon"/>*/}
-                {/*                          <img src={exploreMiniMiddle} alt="middle-mini-icon"/>*/}
-                {/*                          <img src={exploreMiniRight} alt="right-mini-icon"/>*/}
-                {/*                      </div>*/}
-                {/*        <div className='content-wrapper'>*/}
-                {/*            <h2>EXPLORE OUR SERVICE, MAKE YOUR SMILE SHINE</h2>*/}
-                {/*            <div className='content-wrapper__buttons d-flex gap-3'>*/}
-                {/*                <button>Get The App</button>*/}
-                {/*                <button>Meet The Team</button>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*    <div className="explore__right">*/}
-                {/*    <div className='d-flex gap-4'>*/}
-                {/*        <div className='image-buttonwrapper'>*/}
-                {/*            <img src={exploreRightTop} alt="explore-right-top-image"/>*/}
-                {/*            <button>Toothbrush Tracking</button>*/}
-                {/*        </div>*/}
-                {/*        <div className='image-buttonwrapper'>*/}
-                {/*            <img src={exploreRightTop2} alt="explore-right-top-2-image"/>*/}
-                {/*            <button>Oral Care Guides</button>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*        <div className='d-flex gap-4 mt-3'>*/}
-                {/*            <div className='image-buttonwrapper'>*/}
-                {/*                <img src={exploreRightMiddle} alt="explore-middle-image"/>*/}
-                {/*                <button>Dental Health Records</button>*/}
-                {/*            </div>*/}
-                {/*            <div className='image-buttonwrapper'>*/}
-                {/*                <img src={exploreRightMiddle2} alt="explore-middle-image-two"/>*/}
-                {/*                <button>Appointment Scheduling</button>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*        <div className='d-flex gap-4 mt-3'>*/}
-                {/*            <div className='image-buttonwrapper'>*/}
-                {/*                <img src={exploreRightBottom} alt="explore-right-bottom-image"/>*/}
-                {/*                <button>Oral Health Assessment</button>*/}
-                {/*            </div>*/}
-                {/*            <div className='image-buttonwrapper'>*/}
-                {/*                <img src={exploreRightBottomTwo} alt="explore-right-bottom-image-two"/>*/}
-                {/*                <button>Medication Tracking</button>*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</section>*/}
+                <div className='nav-pagethree'>
+                    <NavBar/>
+                </div>
+                <div className='last-page'
+                ref={thirdPageRef}>
+                    {/*EXPLORE SECTION*/}
+                    <section className="container-fluid explore d-flex flex-wrap justify-content-between">
+                        <div className="explore__left">
+                            <div className='d-flex align-items-center gap-2'>
+                                <img src={exploreMiniLeft} alt="left-mini-icon"/>
+                                <img src={exploreMiniMiddle} alt="middle-mini-icon"/>
+                                <img src={exploreMiniRight} alt="right-mini-icon"/>
+                            </div>
+                            <div className='content-wrapper'>
+                                <h2>EXPLORE OUR SERVICE, MAKE YOUR SMILE SHINE</h2>
+                                <div className='content-wrapper__buttons d-flex gap-3'>
+                                    <button>Get The App</button>
+                                    <button>Meet The Team</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="explore__right">
+                            <div className='d-flex gap-4'>
+                                <div className='image-buttonwrapper'>
+                                    <img src={exploreRightTop} alt="explore-right-top-image"/>
+                                    <button>Toothbrush Tracking</button>
+                                </div>
+                                <div className='image-buttonwrapper'>
+                                    <img src={exploreRightTop2} alt="explore-right-top-2-image"/>
+                                    <button>Oral Care Guides</button>
+                                </div>
+                            </div>
+                            <div className='d-flex gap-4 mt-3'>
+                                <div className='image-buttonwrapper'>
+                                    <img src={exploreRightMiddle} alt="explore-middle-image"/>
+                                    <button>Dental Health Records</button>
+                                </div>
+                                <div className='image-buttonwrapper'>
+                                    <img src={exploreRightMiddle2} alt="explore-middle-image-two"/>
+                                    <button>Appointment Scheduling</button>
+                                </div>
+                            </div>
+                            <div className='d-flex gap-4 mt-3'>
+                                <div className='image-buttonwrapper'>
+                                    <img src={exploreRightBottom} alt="explore-right-bottom-image"/>
+                                    <button>Oral Health Assessment</button>
+                                </div>
+                                <div className='image-buttonwrapper'>
+                                    <img src={exploreRightBottomTwo} alt="explore-right-bottom-image-two"/>
+                                    <button>Medication Tracking</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
                 {/*END OF EXPLORE SECTION*/}
             </div>
             <Footer/>

@@ -196,3 +196,11 @@
 .animated-imagewrapper {
     transition: transform 0.5s ease-in-out;
 }
+
+.revolution{
+    display: none;
+}
+
+.last-page{
+    display: none;
+}
